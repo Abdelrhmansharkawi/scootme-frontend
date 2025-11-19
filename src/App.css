@@ -1,0 +1,5 @@
+@import "tailwindcss";
+input::-ms-reveal,
+input::-ms-clear {
+  display: none;
+}
