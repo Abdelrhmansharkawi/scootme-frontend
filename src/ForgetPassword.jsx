@@ -5,33 +5,33 @@ import mu from "../public/mu.svg";
 import { toast, ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 
-const API_URL = "";
+const API_URL = "http://localhost:5000";
 
 export default function ForgotPassword() {
   const [email, setEmail] = useState("");
 
   const handleSubmit = async (e) => {
-  e.preventDefault();
-  try {
-    const res = await fetch(`${API_URL}/api/forgot-password`, {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({ email }),
-    });
+    e.preventDefault();
+    try {
+      const res = await fetch(`${API_URL}/api/forgot-password`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ email }),
+      });
 
-    const data = await res.json();
-    if (res.ok) {
-      toast.success("Reset link sent to your email.");
-    } else {
-      toast.error(data.message || "Something went wrong.");
+      const data = await res.json();
+      if (res.ok) {
+        toast.success("Reset link sent to your email.");
+      } else {
+        toast.error(data.message || "Something went wrong.");
+      }
+    } catch (err) {
+      console.error(err);
+      toast.error("Server error.");
     }
-  } catch (err) {
-    console.error(err);
-    toast.error("Server error.")
-  }
-};
+  };
 
   return (
     <div className="flex flex-col items-center justify-center min-h-screen bg-white px-4">
@@ -59,8 +59,7 @@ export default function ForgotPassword() {
 
         <button
           type="submit"
-          className="w-full bg-orange-500 text-white py-3 rounded-full font-semibold text-lg"
-        >
+          className="w-full bg-orange-500 text-white py-3 rounded-full font-semibold text-lg">
           Reset Password
         </button>
 

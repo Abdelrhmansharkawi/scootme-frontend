@@ -13,7 +13,7 @@ import L from "leaflet";
 import scooterGreen from "../public/Green-scooter.svg";
 import scooterRed from "../public/Red-scooter.svg";
 
-const API_URL = "";
+const API_URL = "http://localhost:5000";
 
 export default function BookRide() {
   const [query, setQuery] = useState("");
@@ -45,8 +45,10 @@ export default function BookRide() {
               location: {
                 ...scooter.location,
                 coordinates: [
-                  scooter.location.coordinates[0] + (Math.random() - 0.5) * offset,
-                  scooter.location.coordinates[1] + (Math.random() - 0.5) * offset,
+                  scooter.location.coordinates[0] +
+                    (Math.random() - 0.5) * offset,
+                  scooter.location.coordinates[1] +
+                    (Math.random() - 0.5) * offset,
                 ],
               },
             };
@@ -55,7 +57,6 @@ export default function BookRide() {
         });
 
         setScooters(updatedScooters);
-
       } catch (err) {
         console.error("Failed to fetch scooters:", err);
         toast.error("Failed to load scooters. Please try again.");
@@ -113,8 +114,7 @@ export default function BookRide() {
     <div className="flex flex-col h-screen bg-gray-50">
       <button
         onClick={handleLogOut}
-        className="absolute top-2 right-2 bg-orange-500 hover:bg-orange-600 text-white px-4 py-2 rounded-full font-semibold transition"
-      >
+        className="absolute top-2 right-2 bg-orange-500 hover:bg-orange-600 text-white px-4 py-2 rounded-full font-semibold transition">
         Log Out
       </button>
       <div className="bg-gradient-to-b from-orange-200 to-transparent p-4">
@@ -135,55 +135,48 @@ export default function BookRide() {
       {/* 🚩 Map */}
       <div className="w-full px-4 md:w-4/5 lg:w-3/5 mx-auto mt-4 rounded-2xl overflow-hidden shadow-lg">
         <MapContainer
-          center={[31.041779, 31.357201]} 
+          center={[31.041779, 31.357201]}
           zoom={15.3}
-          style={{ width: "100%", height: "250px", borderRadius: "20px" }}
-        >
+          style={{ width: "100%", height: "250px", borderRadius: "20px" }}>
           <TileLayer
             url="https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png"
             attribution="&copy; <a href='https://carto.com/attributions'>CARTO</a>"
           />
-          
-            {filtered.map((s) => {
-              const lat = s.location.coordinates[0];
-              const lng = s.location.coordinates[1];
 
-              if (lat === undefined || lng === undefined) {
-                return null;
-              }
+          {filtered.map((s) => {
+            const lat = s.location.coordinates[0];
+            const lng = s.location.coordinates[1];
 
-              // ✅ Choose icon based on status
-              const scooterIcon = L.icon({
-                iconUrl: s.status === "Available" ? scooterGreen : scooterRed,
-                iconSize: [25, 25],
-                iconAnchor: [12.5, 12.5],
-                popupAnchor: [0, -12.5],
-              });
+            if (lat === undefined || lng === undefined) {
+              return null;
+            }
 
-              return (
-                <Marker
-                  key={s._id}
-                  position={[lat, lng]}
-                  icon={scooterIcon}
-                >
-                  <Popup>
-                    <strong>{s.scooterName}</strong>
-                    <br />
-                    {s.location.locationName}
-                    <br />
-                    Status:{" "}
-                    <span
-                      style={{
-                        color: s.status === "Available" ? "green" : "red",
-                      }}
-                    >
-                      {s.status}
-                    </span>
-                  </Popup>
-                </Marker>
-              );
-            })}
-          
+            // ✅ Choose icon based on status
+            const scooterIcon = L.icon({
+              iconUrl: s.status === "Available" ? scooterGreen : scooterRed,
+              iconSize: [25, 25],
+              iconAnchor: [12.5, 12.5],
+              popupAnchor: [0, -12.5],
+            });
+
+            return (
+              <Marker key={s._id} position={[lat, lng]} icon={scooterIcon}>
+                <Popup>
+                  <strong>{s.scooterName}</strong>
+                  <br />
+                  {s.location.locationName}
+                  <br />
+                  Status:{" "}
+                  <span
+                    style={{
+                      color: s.status === "Available" ? "green" : "red",
+                    }}>
+                    {s.status}
+                  </span>
+                </Popup>
+              </Marker>
+            );
+          })}
         </MapContainer>
       </div>
 
@@ -197,21 +190,25 @@ export default function BookRide() {
             {filtered.map((s) => (
               <li
                 key={s._id}
-                className="bg-white p-4 rounded-lg shadow hover:shadow-md transition"
-              >
+                className="bg-white p-4 rounded-lg shadow hover:shadow-md transition">
                 <div className="flex items-center justify-between">
                   <div className="flex items-center">
                     <MdElectricScooter className="text-2xl text-gray-600 mr-4" />
                     <div>
-                      <p className="font-medium text-gray-800">{s.scooterName}</p>
-                      <p className="text-sm text-gray-500">{s.location.locationName}</p>
+                      <p className="font-medium text-gray-800">
+                        {s.scooterName}
+                      </p>
+                      <p className="text-sm text-gray-500">
+                        {s.location.locationName}
+                      </p>
                     </div>
                   </div>
                   <span
                     className={`text-sm font-medium ${
-                      s.status === "Available" ? "text-green-500" : "text-red-500"
-                    }`}
-                  >
+                      s.status === "Available"
+                        ? "text-green-500"
+                        : "text-red-500"
+                    }`}>
                     {s.status}
                   </span>
                 </div>
@@ -219,8 +216,7 @@ export default function BookRide() {
                   <div className="mt-3 flex justify-end">
                     <button
                       onClick={() => handleBook(s)}
-                      className="bg-orange-500 hover:bg-orange-600 text-white px-5 py-2 rounded-full font-semibold transition"
-                    >
+                      className="bg-orange-500 hover:bg-orange-600 text-white px-5 py-2 rounded-full font-semibold transition">
                       Book Now
                     </button>
                   </div>
@@ -241,16 +237,19 @@ export default function BookRide() {
           <FaHome className="text-xl" />
           <span className="text-xs">Home</span>
         </button>
-        <Link to="/book-ride" className="flex flex-col items-center text-gray-500">
+        <Link
+          to="/book-ride"
+          className="flex flex-col items-center text-gray-500">
           <motion.div
             animate={{ y: [0, -15, 0] }}
             transition={{ repeat: Infinity, duration: 1.5 }}
-            className="p-3 bg-white rounded-full shadow-lg"
-          >
+            className="p-3 bg-white rounded-full shadow-lg">
             <MdElectricScooter className="text-4xl text-orange-500 hover:scale-110 transition-transform" />
           </motion.div>
         </Link>
-        <Link to="/history" className="flex flex-col items-center text-gray-500">
+        <Link
+          to="/history"
+          className="flex flex-col items-center text-gray-500">
           <FaHistory className="text-xl" />
           <span className="text-xs">History</span>
         </Link>

@@ -6,6 +6,9 @@ import Signup from "../Signup";
 import History from "../History";
 import ForgotPassword from "../ForgetPassword";
 import BookRide from "../BookRide";
+import Wallet from "../wallet";
+import RideDetails from "../RideDetails";
+import Profile from "../Profile";
 
 const router = createBrowserRouter([
   {
@@ -19,7 +22,9 @@ const router = createBrowserRouter([
   { path: "/history", element: <History /> },
   { path: "/book-ride", element: <BookRide /> },
   { path: "/forget-password", element: <ForgotPassword /> },
-
+  { path: "/wallet", element: <Wallet /> },
+  { path: "/ride-details", element: <RideDetails /> },
+  { path: "/profile", element: <Profile /> },
   {
     path: "/",
     element: <App />,
